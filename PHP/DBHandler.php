@@ -31,8 +31,7 @@ class DBHandler
             $connectStr_dbName = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
             $connectStr_dbUsername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
             $connectStr_dbPassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
-            echo($connectStr_dbName);
-
+            echo($connectStr_dbHost.", ".$connectStr_dbName.", ".$connectStr_dbUsername.", ".$connectStr_dbPassword);
         }
 
         $db_hostname = $connectStr_dbHost;
@@ -47,6 +46,7 @@ class DBHandler
             PDO::ATTR_EMULATE_PREPARES => false
         );
         $this->pdoForDB = new PDO($dsn, $db_username, $db_password, $opt);
+        if($this->pdoForDB ===null) echo('IS NULL');
     }
 
     public function __destruct(){
