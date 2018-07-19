@@ -1,4 +1,6 @@
 <?php
+mysql_query('SET NAMES UTF8');
+header("Content-type:text/html;charset=utf-8");
 /**
  * Created by PhpStorm.
  * User: aoo
