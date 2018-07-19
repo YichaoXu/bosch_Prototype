@@ -34,7 +34,7 @@ class DBHandler
         }
 
         $db_hostname = $connectStr_dbHost;
-        $db_database = $connectStr_dbName;
+        $db_database = $connectStr_dbName.".".$dbName;
         $db_username = $connectStr_dbUsername;
         $db_password = $connectStr_dbPassword;
         $db_charset = "utf8mb4";
