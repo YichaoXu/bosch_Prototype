@@ -17,10 +17,26 @@ class DBHandler
 
     public function __construct($dbName){
 
-        $db_hostname = "localhost";
-        $db_database = $dbName;
-        $db_username = "prototype";
-        $db_password = "prototype";
+        $connectStr_dbHost = '';
+        $connectStr_dbName = '';
+        $connectStr_dbUsername = '';
+        $connectStr_dbPassword = '';
+
+        foreach ($_SERVER as $key => $value) {
+            if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
+                continue;
+            }
+
+            $connectStr_dbHost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
+            $connectStr_dbName = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
+            $connectStr_dbUsername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
+            $connectStr_dbPassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+        }
+
+        $db_hostname = $connectStr_dbHost;
+        $db_database = $connectStr_dbName;
+        $db_username = $connectStr_dbUsername;
+        $db_password = $connectStr_dbPassword;
         $db_charset = "utf8mb4";
         $dsn = "mysql:host=$db_hostname;dbname=$db_database;charset=$db_charset";
         $opt = array(
