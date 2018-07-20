@@ -1,5 +1,4 @@
 <?php
-mysql_query('SET NAMES UTF8');
 header("Content-type:text/html;charset=utf-8");
 /**
  * Created by PhpStorm.
@@ -52,7 +51,7 @@ try{
     $dbForWarehouse->exeQuery(
         "INSERT INTO wh$warehouseID(boxID, stateCode, areaCode, groupCode) 
          VALUE(?, ?, ?, ?)",
-        array($boxID, $storageArea, time())
+        array($boxID,"STORE", $storageArea, 0)
     );
 
     $dbForBasic->exeQuery(
@@ -73,7 +72,7 @@ try{
 outputResult("100","SUCCESS");
 
 function outputResult($code, $result){
-    echo("{'code':'$code', 'result':'$result'}");
+    echo(json_encode(array("code"=>$code, "result"=>$result)));
 }
 
 

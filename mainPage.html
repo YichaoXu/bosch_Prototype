@@ -1,0 +1,108 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="bosch.css">
+    <script src="jsLib/jquery-3.3.1.js"></script>
+    <script src="bosch.js"></script>
+    <script>
+        window.onload = function () {
+            $.post("http://localhost/Prototype/php/QueryAllWarehousesBoxes.php", {}, function (re) {
+                let responseObj = JSON.parse(re);
+                let resultsArray = JSON.parse(responseObj["result"]);
+                let tmpTableBody = $('<tbody/>');
+                generateTr("总数量: " + (0+resultsArray["StoredBoxes"]+resultsArray["DestroyedBoxes"]+resultsArray["WaitingBoxes"]*1+resultsArray["DeliveringBoxes"]*1));
+                generateTr("正在库存: " + resultsArray["StoredBoxes"]);
+                generateTr("已损坏: " + resultsArray["DestroyedBoxes"]);
+                generateTr("正在运输: " + resultsArray["WaitingBoxes"]);
+                generateTr("带使用: " + resultsArray["DeliveringBoxes"]);
+                let tmpLeft = $("#leftMenu");
+                tmpLeft.empty();
+                tmpLeft.append(tmpTableBody);
+
+                function generateTr(value){
+                    let tmpTd = $('<td/>').addClass("tdLeft");
+                    tmpTd.className = "tdLeft";
+                    tmpTd.text(value);
+                    return $('<tr/>').append(tmpTd).appendTo(tmpTableBody);
+                }
+            });
+
+            let tmpTable = $("<table/>");
+            tmpTable.addClass("warehouseList");
+            let r, c, tmpTr, tmpTd, tmpDiv;
+            let i=0;
+            for (r = 0; r < 3; r++) {
+                tmpTr = $("<tr/>");
+                for (c = 0; c < 3; c++) {
+                    tmpTd = $("<td/>").append($("<div/>").text(++i).addClass("warehouseListCell"));
+                    tmpTr.append(tmpTd);
+                    tmpTd.click(function(event){
+                        window.location.href="warehousePage.html";
+                    });
+                }
+                tmpTable.append(tmpTr);
+            }
+
+            console.log(tmpTable);
+            $("#divCentre").append(tmpTable);
+
+            $("#mainPage").click(function (ev) {
+                window.location.href="mainPage.html";
+            });
+
+            $("#storePage").click(function (ev) {
+                window.location.href="storePage.html";
+            });
+
+            $("#deliverPage").click(function (ev) {
+                window.location.href="storePage.html";
+            });
+
+            $("#launchPage").click(function (ev) {
+                window.location.href="storePage.html";
+            });
+
+            $("#recyclePage").click(function (ev) {
+                window.location.href="recyclePage.html";
+            });
+
+        };
+    </script>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<div id="container">
+
+    <table id="leftMenu">
+        <tbody>
+        <tr><td class="tdLeft">总数量: Loading</td></tr>
+        <tr><td class="tdLeft">正在库存: Loading</td></tr>
+        <tr><td class="tdLeft">已损坏: Loading</td></tr>
+        <tr><td class="tdLeft">正在运输: Loading</td></tr>
+        <tr><td class="tdLeft">带使用: Loading</td></tr>
+        </tbody>
+    </table>
+
+    <div id="divCentre">
+        <div id="centreTitle">仓库列表</div>
+    </div>
+
+
+    <table class="rightMenu">
+        <tr>
+            <td id="mainPage" class="tdRight">主菜单</td>
+        </tr>
+        <tr>
+            <td id="storePage" class="tdRight">存入</td>
+        </tr>
+        <tr>
+            <td id="deliverPage" class="tdRight">运输</td>
+        </tr>
+        <tr>
+            <td id="launchPage" class="tdRight">启用</td>
+        </tr>
+        <tr>
+            <td id="recyclePage" class="tdRight">回收</td>
+        </tr>
+    </table>
+</div>
+</body>

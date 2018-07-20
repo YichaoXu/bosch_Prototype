@@ -72,6 +72,6 @@ try{
 outputResult("100","SUCCESS");
 
 function outputResult($code, $result){
-    echo("{'code':'$code', 'result':'$result'}");
+    echo(json_encode(array("code"=>$code, "result"=>$result)));
 }
 

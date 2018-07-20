@@ -1,5 +1,4 @@
 <?php
-mysql_query('SET NAMES UTF8');
 header("Content-type:text/html;charset=utf-8");
 /**
  * Created by PhpStorm.
@@ -17,27 +16,10 @@ class DBHandler
 
     public function __construct($dbName){
 
-        $connectStr_dbHost = '';
-        $connectStr_dbName = '';
-        $connectStr_dbUsername = '';
-        $connectStr_dbPassword = '';
-
-        foreach ($_SERVER as $key => $value) {
-            if (strpos($key, "MYSQLCONNSTR_localdb") !== 0) {
-                continue;
-            }
-
-            $connectStr_dbHost = preg_replace("/^.*Data Source=(.+?);.*$/", "\\1", $value);
-            $connectStr_dbName = preg_replace("/^.*Database=(.+?);.*$/", "\\1", $value);
-            $connectStr_dbUsername = preg_replace("/^.*User Id=(.+?);.*$/", "\\1", $value);
-            $connectStr_dbPassword = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
-            echo($connectStr_dbHost.", ".$connectStr_dbName.", ".$connectStr_dbUsername.", ".$connectStr_dbPassword);
-        }
-
-        $db_hostname = $connectStr_dbHost;
+        $db_hostname = "localhost";
         $db_database = $dbName;
-        $db_username = $connectStr_dbUsername;
-        $db_password = $connectStr_dbPassword;
+        $db_username = "aooblocc_proto";
+        $db_password = "Prototype";
         $db_charset = "utf8mb4";
         $dsn = "mysql:host=$db_hostname;dbname=$db_database;charset=$db_charset";
         $opt = array(
@@ -45,8 +27,11 @@ class DBHandler
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false
         );
-        $this->pdoForDB = new PDO($dsn, $db_username, $db_password, $opt);
-        if($this->pdoForDB ===null) echo('IS NULL');
+        try{
+            $this->pdoForDB = new PDO($dsn, $db_username, $db_password, $opt);
+        }catch(Exception $e){
+            echo('IS NULL'.$e->getMessage());
+        }
     }
 
     public function __destruct(){
@@ -78,4 +63,13 @@ class DBHandler
         )->fetch();
         return $stmt["num"];
     }
+
+    public function queryBoxesNumWithSpecialSize($tableName, $stateCode, $sizeCode){
+        $stmt = $this->exeQuery(
+            "SELECT COUNT(*) AS num FROM $tableName WHERE stateCode=? AND  boxID REGEXP '^$sizeCode'",
+            array($stateCode)
+        )->fetch();
+        return $stmt["num"];
+    }
+
 }

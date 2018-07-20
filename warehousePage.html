@@ -1,0 +1,215 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="bosch.css">
+    <script src="jsLib/jquery-3.3.1.js"></script>
+    <script src="bosch.js"></script>
+    <script>
+        window.onload = function () {
+            let tmpTable = generateTable(6, 7);
+            tmpTable.id = "tableMiddle";
+            $("#warehouseTableContainer").append(tmpTable);
+
+            $.post("http://localhost/Prototype/php/QuerySpecifiedWarehouseBoxes.php", {warehouseID: 1}, function (re) {
+                let responseObj = JSON.parse(re);
+                let resultsArray = JSON.parse(responseObj["result"]);
+                let tmpTableBody = $('<tbody/>');
+                generateTr("总数量: " + (0 + resultsArray["StoredBoxes"] + resultsArray["DestroyedBoxes"] + resultsArray["WaitingBoxes"] * 1 + resultsArray["DeliveringBoxes"] * 1));
+                generateTr("正在库存: " + resultsArray["StoredBoxes"]);
+                generateTr("已损坏: " + resultsArray["DestroyedBoxes"]);
+                generateTr("正在运输: " + resultsArray["WaitingBoxes"]);
+                generateTr("带使用: " + resultsArray["DeliveringBoxes"]);
+
+                let tmpTd = $('<td/>').addClass("tdLeft");
+                tmpTd.className = "tdLeft";
+                tmpTd.click(function (event) {
+                    window.location.href="mainPage.html";
+                });
+                $('<img src="assert/arrow.png"/>').appendTo(tmpTd);
+                $('<tr/>').append(tmpTd).appendTo(tmpTableBody);
+
+                let tmpLeft = $("#leftMenu");
+                tmpLeft.empty();
+                tmpLeft.append(tmpTableBody);
+
+                function generateTr(value) {
+                    let tmpTd = $('<td/>').addClass("tdLeft");
+                    tmpTd.className = "tdLeft";
+                    tmpTd.text(value);
+                    return $('<tr/>').append(tmpTd).appendTo(tmpTableBody);
+                }
+            });
+
+            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "A"},function(re){
+                let responseObj = JSON.parse(re);
+                let resultsArray = JSON.parse(responseObj["result"]);
+                $("#largeBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
+                $("#largeBoxStoredNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]);
+                $("#largeBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
+                $("#largeBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
+            });
+            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "B"},function(re){
+                let responseObj = JSON.parse(re);
+                let resultsArray = JSON.parse(responseObj["result"]);
+                $("#normalBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
+                $("#normalBoxStoredNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]);
+                $("#normalBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
+                $("#normalBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
+            });
+            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "C"},function(re){
+                let responseObj = JSON.parse(re);
+                let resultsArray = JSON.parse(responseObj["result"]);
+                $("#smallBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
+                $("#smallBoxStoredNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]);
+                $("#smallBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
+                $("#smallBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
+            });
+            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "D"},function(re){
+                let responseObj = JSON.parse(re);
+                let resultsArray = JSON.parse(responseObj["result"]);
+                $("#smallestBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
+                $("#smallestBoxStoredNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]);
+                $("#smallestBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
+                $("#smallestBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
+            });
+            $("#mainPage").click(function (ev) {
+                window.location.href="mainPage.html";
+            });
+
+            $("#storePage").click(function (ev) {
+                window.location.href="storePage.html";
+            });
+
+            $("#deliverPage").click(function (ev) {
+                window.location.href="storePage.html";
+            });
+
+            $("#launchPage").click(function (ev) {
+                window.location.href="storePage.html";
+            });
+
+            $("#recyclePage").click(function (ev) {
+                window.location.href="recyclePage.html";
+            });
+
+        };
+    </script>
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<div id="container">
+    <table id="leftMenu">
+        <tbody>
+        <tr><td class="tdLeft">总数量: Loading</td></tr>
+        <tr><td class="tdLeft">库存: Loading</td></tr>
+        <tr><td class="tdLeft">已损坏: Loading</td></tr>
+        <tr><td class="tdLeft">正在运输: Loading</td></tr>
+        <tr><td class="tdLeft">带使用: Loading</td></tr>
+        </tbody>
+    </table>
+
+    <div id="divCentre">
+        <div id="centreTop">
+            <div class="warehouseInfo">
+                <div class="warehouseTitle">仓库列表</div>
+                <div class="warehouseID">
+                    <div>0001</div>
+                </div>
+                <div class="address">耿端阳家</div>
+            </div>
+
+
+            <div id="warehouseTableContainer">
+                <div>仓库图</div>
+            </div>
+        </div>
+
+        <div id="boxesInfo">
+            <div id="boxesTitle">周转箱明细</div>
+            <div id="boxesDetails">
+                <div class="singleBoxInfo" id="largeBox">
+                    <img id="lBox" src="assert/lBox.png"/>
+                    <div>A型:
+                        <div id="largeBoxSizeNum">Loading</div>
+                    </div>
+                    <div>库存:
+                        <div id="largeBoxStoredNum">Loading</div>
+                    </div>
+                    <div>将送达:
+                        <div id="largeBoxDeliveringNum">Loading</div>
+                    </div>
+                    <div>已经损坏:
+                        <div id="largeBoxDestroyedNum">Loading</div>
+                    </div>
+                </div>
+
+                <div class="singleBoxInfo">
+                    <img id="nBox" src="assert/nBox.png"/>
+                    <div>B型:
+                        <div id="normalBoxSizeNum">Loading</div>
+                    </div>
+                    <div>库存:
+                        <div id="normalBoxStoredNum">Loading</div>
+                    </div>
+                    <div>将送达:
+                        <div id="normalBoxDeliveringNum">Loading</div>
+                    </div>
+                    <div>已经损坏:
+                        <div id="normalBoxDestroyedNum">Loading</div>
+                    </div>
+                </div>
+
+                <div class="singleBoxInfo">
+                    <img id="sbox" src="assert/SBox.png"/>
+                    <div>C型:
+                        <div id="smallBoxSizeNum">Loading</div>
+                    </div>
+                    <div>库存:
+                        <div id="smallBoxStoredNum">Loading</div>
+                    </div>
+                    <div>将送达:
+                        <div id="smallBoxDeliveringNum">Loading</div>
+                    </div>
+                    <div>已经损坏:
+                        <div id="smallBoxDestroyedNum">Loading</div>
+                    </div>
+                </div>
+
+                <div class="singleBoxInfo">
+                    <img id="sestBox" src="assert/sestBox.png"/>
+                    <div>D型:
+                        <div id="smallestBoxSizeNum">Loading</div>
+                    </div>
+                    <div>库存:
+                        <div id="smallestBoxStoredNum">Loading</div>
+                    </div>
+                    <div>将送达:
+                        <div id="smallestBoxDeliveringNum">Loading</div>
+                    </div>
+                    <div>已经损坏:
+                        <div id="smallestBoxDestroyedNum">Loading</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <table class="rightMenu">
+        <tr>
+            <td id="mainPage" class="tdRight">主菜单</td>
+        </tr>
+        <tr>
+            <td id="storePage" class="tdRight">存入</td>
+        </tr>
+        <tr>
+            <td id="deliverPage" class="tdRight">运输</td>
+        </tr>
+        <tr>
+            <td id="launchPage" class="tdRight">启用</td>
+        </tr>
+        <tr>
+            <td id="recyclePage" class="tdRight">回收</td>
+        </tr>
+    </table>
+</div>
+</body>
