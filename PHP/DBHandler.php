@@ -9,8 +9,8 @@ header("Content-type:text/html;charset=utf-8");
 
 class DBHandler
 {
-    const DATABASE_BASIC = "proto_basic";
-    const DATABASE_WAREHOUSES = "proto_warehouses";
+    const DATABASE_BASIC = "aooblocc_protobasic";
+    const DATABASE_WAREHOUSES = "aooblocc_protowarehouses";
 
     private $pdoForDB;
 

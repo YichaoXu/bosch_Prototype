@@ -8,7 +8,7 @@
             tmpTable.id = "tableMiddle";
             $("#warehouseTableContainer").append(tmpTable);
 
-            $.post("http://localhost/Prototype/php/QuerySpecifiedWarehouseBoxes.php", {warehouseID: 1}, function (re) {
+            $.post("http://aooblog.me/prototype/QuerySpecifiedWarehouseBoxes.php", {warehouseID: 1}, function (re) {
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 let tmpTableBody = $('<tbody/>');
@@ -38,7 +38,7 @@
                 }
             });
 
-            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "A"},function(re){
+            $.post("http://aooblog.me/prototype/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "A"},function(re){
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 $("#largeBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
@@ -46,7 +46,7 @@
                 $("#largeBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
                 $("#largeBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
             });
-            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "B"},function(re){
+            $.post("http://aooblog.me/prototype/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "B"},function(re){
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 $("#normalBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
@@ -54,7 +54,7 @@
                 $("#normalBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
                 $("#normalBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
             });
-            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "C"},function(re){
+            $.post("http://aooblog.me/prototype/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "C"},function(re){
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 $("#smallBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);
@@ -62,7 +62,7 @@
                 $("#smallBoxDeliveringNum").text(resultsArray["DeliveringBoxes"]);
                 $("#smallBoxDestroyedNum").text(resultsArray["DestroyedBoxes"]);
             });
-            $.post("http://localhost/Prototype/php/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "D"},function(re){
+            $.post("http://aooblog.me/prototype/QueryDetailsBoxesSize.php", {warehouseID: 1, sizeCode: "D"},function(re){
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 $("#smallestBoxSizeNum").text(0+resultsArray["StoredBoxes"]+resultsArray["WaitingBoxes"]+resultsArray["DeliveringBoxes"]);

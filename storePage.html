@@ -4,7 +4,7 @@
     <script src="bosch.js"></script>
     <script>
         window.onload = function () {
-            $.post("http://localhost/Prototype/php/QueryAllWarehousesBoxes.php", {}, function (re) {
+            $.post("http://aooblog.me/prototype/QueryAllWarehousesBoxes.php", {}, function (re) {
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 let tmpTableBody = $('<tbody/>');
@@ -25,7 +25,7 @@
                 }
             });
 
-            $.post("http://localhost/Prototype/php/QueryStoringUngoupBox.php?warehouseID=1", {wareHouseID:1}, function (re) {
+            $.post("http://aooblog.me/prototype/QueryStoringUngoupBox.php?warehouseID=1", {wareHouseID:1}, function (re) {
                 let responseObj = JSON.parse(re);
                 let resultsArray = JSON.parse(responseObj["result"]);
                 let listArea = $("#preListArea");
